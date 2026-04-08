@@ -4,13 +4,8 @@ import profileImage from '../../assets/85c8e988547fd7b02b3123173cd649752ad2e2d2.
 
 export function Hero() {
   const handleDownloadCV = () => {
-    // Note: Place your CV file (D.M_Wickramarachchi.pdf) in the public folder
-    // For now, this opens a placeholder alert
-    alert('Please upload your CV to the public folder as D.M_Wickramarachchi.pdf to enable downloads.');
-    
-    // Uncomment this when CV is in public folder:
-     const link = document.createElement('a');
-    link.href = '/D.M_Wickramarachchi.pdf';
+    const link = document.createElement('a');
+    link.href = '/D.M Wickramarachchi.pdf';
     link.download = 'Dilruk_Migara_CV.pdf';
     document.body.appendChild(link);
     link.click();
