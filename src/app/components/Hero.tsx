@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { Download, ArrowRight, Linkedin, Mail, MessageCircle } from 'lucide-react';
-import profileImage from '../../assets/85c8e988547fd7b02b3123173cd649752ad2e2d2.png';
+import profileImage from '../../assets/profile.jpg';
 
 export function Hero() {
   const handleDownloadCV = () => {
@@ -30,7 +30,7 @@ export function Hero() {
               className="inline-block"
             >
               <span className="px-4 py-2 rounded-full bg-gradient-to-r from-[#00d4ff]/20 to-[#c0ff00]/20 border border-[#00d4ff]/30 text-[#00d4ff] text-sm font-medium">
-                IoT Engineer & Digital Marketing Strategist
+                Embedded Engineer & Digital Marketing Strategist
               </span>
             </motion.div>
 
@@ -53,7 +53,7 @@ export function Hero() {
               className="text-lg text-gray-400 leading-relaxed"
             >
               A detail-oriented <span className="text-[#00d4ff] font-semibold">Computer Systems Engineering</span> undergraduate at SLIIT, specializing in{' '}
-              <span className="text-[#c0ff00] font-semibold">IoT and Embedded Systems</span>. As Co-Founder of Goal Marketing, I bridge the gap between cutting-edge technology and strategic business solutions.
+              <span className="text-[#c0ff00] font-semibold">Embedded Systems</span>. As Co-Founder of Goal Marketing, I bridge the gap between cutting-edge technology and strategic business solutions.
             </motion.p>
 
             <motion.div
