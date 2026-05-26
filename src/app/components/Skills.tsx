@@ -1,196 +1,204 @@
 import { motion } from 'motion/react';
-import { Code2, Cpu, Wrench, Zap, Terminal, Layers } from 'lucide-react';
-import { useState } from 'react';
+import {
+  Code2,
+  Cpu,
+  Wrench,
+  Zap,
+  Terminal,
+  Layers,
+  Smile,
+  GitBranch,
+} from 'lucide-react';
+
+type IconType = (props: any) => JSX.Element;
+
+const skillCategories: {
+  category: string;
+  icon: IconType;
+  color: string;
+  skills: { name: string; icon?: IconType; learning?: boolean }[];
+}[] = [
+  {
+    category: 'Programming Languages',
+    icon: Code2,
+    color: '#00d4ff',
+    skills: [
+      { name: 'C++' },
+      { name: 'Python' },
+      { name: 'Embedded C' },
+      { name: 'JavaScript' },
+    ],
+  },
+  {
+    category: 'IoT & Embedded Systems',
+    icon: Cpu,
+    color: '#7CFF00',
+    skills: [
+      { name: 'Arduino' },
+      { name: 'Raspberry Pi' },
+      { name: 'ESP32/ESP8266' },
+      { name: 'Sensor Integration' },
+    ],
+  },
+  {
+    category: 'Hardware & PCB Design',
+    icon: Wrench,
+    color: '#8BE1FF',
+    skills: [
+      { name: 'PCB Design' },
+      { name: 'Circuit Analysis' },
+      { name: 'Fabrication' },
+      { name: 'Testing & Debug' },
+    ],
+  },
+  {
+    category: 'Development Tools',
+    icon: Terminal,
+    color: '#C0FF00',
+    skills: [
+      { name: 'Git & GitHub' },
+      { name: 'VS Code' },
+      { name: 'Arduino IDE' },
+      { name: 'Linux/Unix' },
+    ],
+  },
+  {
+    category: 'AI & Machine Learning',
+    icon: Zap,
+    color: '#FF6AF5',
+    skills: [
+      { name: 'Machine Learning', learning: true },
+      { name: 'Deep Learning', learning: true },
+      { name: 'Data Analysis', learning: true },
+      { name: 'Python ML Libraries', learning: true },
+    ],
+  },
+  {
+    category: 'Digital Marketing & Business',
+    icon: Layers,
+    color: '#FFD36A',
+    skills: [
+      { name: 'Digital Marketing' },
+      { name: 'Project Management' },
+      { name: 'Team Leadership' },
+      { name: 'Business Strategy' },
+    ],
+  },
+];
+
+function SkillBadge({ name, color, Icon, learning }: { name: string; color: string; Icon?: IconType; learning?: boolean }) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.98 }}
+      className="relative flex flex-col items-center justify-center gap-3 p-4 rounded-2xl bg-white/3 border border-white/6 backdrop-blur-md hover:shadow-[0_6px_30px_rgba(0,0,0,0.6)] transition-shadow duration-300"
+    >
+      <div className="relative">
+        {/* Neon glow ring */}
+        <div
+          className={`absolute -inset-1 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+          style={{ boxShadow: `0 6px 40px ${color}66` }}
+        />
+
+        <div className="relative flex items-center justify-center">
+          <div
+            className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-black/30 to-white/5 border border-white/10`}
+            style={{ boxShadow: `inset 0 -6px 18px rgba(0,0,0,0.6), 0 6px 30px ${color}30` }}
+          >
+            {Icon ? <Icon size={22} style={{ color }} /> : <Smile size={20} style={{ color }} />}
+          </div>
+
+          {learning && (
+            <span className="absolute -right-2 -top-2 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-transparent ring-2" style={{ boxShadow: `0 0 8px ${color}` }} />
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="text-center">
+        <div className="text-sm font-semibold text-gray-100">{name}</div>
+        {learning ? (
+          <div className="mt-1 text-xs text-[#cbd5ff] flex items-center justify-center gap-2">
+            <span className="px-2 py-0.5 rounded-full text-[10px] bg-white/6 border border-white/8">Currently Learning</span>
+          </div>
+        ) : (
+          <div className="mt-1 text-xs text-gray-400">Proficient</div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
 
 export function Skills() {
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-
-  const skillCategories = [
-    {
-      category: 'Programming Languages',
-      icon: Code2,
-      color: '#00d4ff',
-      skills: [
-        { name: 'C++', level: 90 },
-        { name: 'Python', level: 85 },
-        { name: 'Embedded C', level: 88 },
-        { name: 'JavaScript', level: 75 },
-      ],
-    },
-    {
-      category: 'IoT & Embedded Systems',
-      icon: Cpu,
-      color: '#c0ff00',
-      skills: [
-        { name: 'Arduino', level: 95 },
-        { name: 'Raspberry Pi', level: 90 },
-        { name: 'ESP32/ESP8266', level: 85 },
-        { name: 'Sensor Integration', level: 92 },
-      ],
-    },
-    {
-      category: 'Hardware & PCB Design',
-      icon: Wrench,
-      color: '#00d4ff',
-      skills: [
-        { name: 'PCB Design', level: 80 },
-        { name: 'Circuit Analysis', level: 85 },
-        { name: 'Fabrication', level: 75 },
-        { name: 'Testing & Debug', level: 88 },
-      ],
-    },
-    {
-      category: 'Development Tools',
-      icon: Terminal,
-      color: '#c0ff00',
-      skills: [
-        { name: 'Git & GitHub', level: 85 },
-        { name: 'VS Code', level: 90 },
-        { name: 'Arduino IDE', level: 95 },
-        { name: 'Linux/Unix', level: 80 },
-      ],
-    },
-    {
-      category: 'AI & Machine Learning',
-      icon: Zap,
-      color: '#00d4ff',
-      skills: [
-        { name: 'Machine Learning', level: 45 },
-        { name: 'Deep Learning', level: 40 },
-        { name: 'Data Analysis', level: 60 },
-        { name: 'Python ML Libraries', level: 50 },
-      ],
-    },
-    {
-      category: 'Digital Marketing & Business',
-      icon: Layers,
-      color: '#c0ff00',
-      skills: [
-        { name: 'Digital Marketing', level: 90 },
-        { name: 'Project Management', level: 87 },
-        { name: 'Team Leadership', level: 85 },
-        { name: 'Business Strategy', level: 82 },
-      ],
-    },
-  ];
-
   return (
     <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#050508]">
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-[#00d4ff] to-[#c0ff00] bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">
+            <span className="bg-gradient-to-r from-[#8BE1FF] via-[#FF6AF5] to-[#C0FF00] bg-clip-text text-transparent">
               Technical Skills
             </span>
           </h2>
-          <p className="text-gray-400 text-lg">Expertise across Hardware and Software</p>
+          <p className="text-gray-400 max-w-2xl mx-auto">Focused on hardware, embedded systems, and modern AI tooling — presented with a dark, futuristic aesthetic.</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {skillCategories.map((category, categoryIndex) => {
-            const Icon = category.icon;
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {skillCategories.map((cat, i) => {
+            const HeaderIcon = cat.icon;
             return (
               <motion.div
-                key={categoryIndex}
-                initial={{ opacity: 0, y: 30 }}
+                key={cat.category}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: categoryIndex * 0.1 }}
+                transition={{ duration: 0.6, delay: i * 0.06 }}
                 className="group relative"
               >
-                <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 h-full">
-                  {/* Glowing effect on hover */}
-                  <div 
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"
-                    style={{ background: `radial-gradient(circle at top, ${category.color}20, transparent)` }}
-                  ></div>
-
-                  <div className="relative z-10">
-                    {/* Header */}
-                    <div className="flex items-center gap-3 mb-6">
-                      <div 
-                        className="p-2 rounded-lg"
-                        style={{ backgroundColor: `${category.color}20` }}
-                      >
-                        <Icon size={24} style={{ color: category.color }} />
+                <div className="relative p-6 rounded-2xl bg-gradient-to-b from-white/3 to-white/2 border border-white/6 backdrop-blur-md hover:shadow-[0_15px_50px_rgba(0,0,0,0.6)] transition-shadow duration-300">
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg" style={{ background: `${cat.color}18` }}>
+                        <HeaderIcon size={20} style={{ color: cat.color }} />
                       </div>
-                      <h3 className="font-bold text-lg">{category.category}</h3>
+                      <h3 className="text-lg font-bold text-gray-100">{cat.category}</h3>
                     </div>
+                    <div className="text-sm text-gray-400">{cat.skills.length} items</div>
+                  </div>
 
-                    {/* Skills */}
-                    <div className="space-y-4">
-                      {category.skills.map((skill, skillIndex) => (
-                        <div 
-                          key={skillIndex}
-                          onMouseEnter={() => setHoveredSkill(`${categoryIndex}-${skillIndex}`)}
-                          onMouseLeave={() => setHoveredSkill(null)}
-                        >
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm font-medium text-gray-300">{skill.name}</span>
-                            <span className="text-xs text-gray-500">{skill.level}%</span>
-                          </div>
-                          <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                            <motion.div
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${skill.level}%` }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 1, delay: categoryIndex * 0.1 + skillIndex * 0.1 }}
-                              className="h-full rounded-full relative"
-                              style={{ 
-                                background: `linear-gradient(90deg, ${category.color}, ${category.color}aa)`,
-                                boxShadow: hoveredSkill === `${categoryIndex}-${skillIndex}` 
-                                  ? `0 0 10px ${category.color}` 
-                                  : 'none'
-                              }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    {cat.skills.map((s) => (
+                      <SkillBadge key={s.name} name={s.name} color={cat.color} learning={!!s.learning} />
+                    ))}
                   </div>
                 </div>
               </motion.div>
             );
           })}
         </div>
-      </div>
 
-      {/* Interests & Learning Section */}
-      <div className="max-w-7xl mx-auto mt-12 px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative bg-gradient-to-r from-[#00d4ff]/10 to-[#c0ff00]/10 backdrop-blur-sm border border-white/10 rounded-2xl p-8"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-10 p-6 rounded-2xl bg-gradient-to-r from-[#0b1020]/40 to-[#05060a]/30 border border-white/6 backdrop-blur-sm"
         >
-          <div className="text-center max-w-3xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4">
-              <span className="text-[#00d4ff]">Current Learning</span> &{' '}
-              <span className="text-[#c0ff00]">Interests</span>
-            </h3>
-            <p className="text-gray-300 mb-6">
-              Actively exploring the intersection of IoT and Artificial Intelligence
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <div className="px-6 py-3 bg-[#00d4ff]/20 border border-[#00d4ff]/40 rounded-xl">
-                <span className="text-[#00d4ff] font-semibold">🤖 Machine Learning</span>
-                <span className="text-gray-400 text-sm ml-2">(Learning)</span>
-              </div>
-              <div className="px-6 py-3 bg-[#c0ff00]/20 border border-[#c0ff00]/40 rounded-xl">
-                <span className="text-[#c0ff00] font-semibold">🧠 Deep Learning</span>
-                <span className="text-gray-400 text-sm ml-2">(Learning)</span>
-              </div>
-              <div className="px-6 py-3 bg-[#00d4ff]/20 border border-[#00d4ff]/40 rounded-xl">
-                <span className="text-[#00d4ff] font-semibold">📊 Data Science</span>
-                <span className="text-gray-400 text-sm ml-2">(Interest)</span>
-              </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <h4 className="font-semibold text-gray-100">Learning & Interests</h4>
+              <p className="text-gray-400 text-sm">Actively sharpening AI & ML skills — expect continual improvements and hands-on projects.</p>
+            </div>
+
+            <div className="flex gap-3">
+              <div className="px-3 py-2 rounded-full bg-gradient-to-r from-[#FF6AF5]/20 to-[#8BE1FF]/10 border border-white/6 text-sm text-gray-200">AI & ML — Currently Learning</div>
+              <div className="px-3 py-2 rounded-full bg-white/3 border border-white/6 text-sm text-gray-200">IoT & Edge</div>
             </div>
           </div>
         </motion.div>
