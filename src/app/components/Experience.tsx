@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { GraduationCap, Briefcase, Calendar, MapPin } from 'lucide-react';
+import { GraduationCap, Briefcase, Calendar, MapPin, ExternalLink } from 'lucide-react';
 
 export function Experience() {
   const experiences = [
@@ -23,6 +23,17 @@ export function Experience() {
       highlights: ['Business Strategy', 'Team Leadership', 'Client Management', 'Digital Marketing'],
       color: '#c0ff00',
     },
+    {
+      type: 'work',
+      title: 'Owner & Tuition Master',
+      organization: 'Mathsbook (O/L Mathematics Academy)',
+      period: '2024 - Present',
+      location: 'Sri Lanka / Online',
+      description: 'Conducting structured O/L Mathematics classes. Managing the mathsbook online learning system to track student progress, share homework, and offer online tests.',
+      highlights: ['Maths Instruction', 'Curriculum Design', 'E-Learning Platform', 'Student Mentoring'],
+      color: '#ffaa00',
+      website: 'https://mathsbook.dilrukmigara.me',
+    },
   ];
 
   return (
@@ -40,11 +51,11 @@ export function Experience() {
               Experience & Education
             </span>
           </h2>
-          <p className="text-gray-400 text-lg">My Journey in Engineering and Business</p>
+          <p className="text-gray-400 text-lg">My Journey in Engineering, Business, and Education</p>
         </motion.div>
 
         {/* Bento Grid Layout */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {experiences.map((exp, index) => (
             <motion.div
               key={index}
@@ -55,63 +66,87 @@ export function Experience() {
               className="group relative"
             >
               {/* Glassmorphism card */}
-              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 h-full">
+              <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 transition-all duration-300 h-full flex flex-col justify-between">
                 {/* Glowing border on hover */}
                 <div 
                   className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"
                   style={{ background: `radial-gradient(circle at top left, ${exp.color}30, transparent)` }}
                 ></div>
                 
-                <div className="relative z-10">
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <div 
-                      className="inline-flex p-3 rounded-xl"
-                      style={{ backgroundColor: `${exp.color}20`, borderColor: `${exp.color}50` }}
-                    >
-                      {exp.type === 'education' ? (
-                        <GraduationCap size={32} style={{ color: exp.color }} />
-                      ) : (
-                        <Briefcase size={32} style={{ color: exp.color }} />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <h3 className="text-2xl font-bold mb-2" style={{ color: exp.color }}>
-                    {exp.title}
-                  </h3>
-                  <p className="text-xl text-white mb-4">{exp.organization}</p>
-                  
-                  <div className="flex flex-wrap gap-4 mb-4 text-gray-400 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={16} />
-                      <span>{exp.period}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <MapPin size={16} />
-                      <span>{exp.location}</span>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-300 mb-6">{exp.description}</p>
-
-                  {/* Highlights */}
-                  <div className="flex flex-wrap gap-2">
-                    {exp.highlights.map((highlight, i) => (
-                      <span
-                        key={i}
-                        className="px-3 py-1 rounded-full text-xs font-medium"
-                        style={{ 
-                          backgroundColor: `${exp.color}20`,
-                          borderWidth: '1px',
-                          borderColor: `${exp.color}40`,
-                          color: exp.color
-                        }}
+                <div className="relative z-10 flex flex-col h-full justify-between">
+                  <div>
+                    {/* Icon */}
+                    <div className="mb-6">
+                      <div 
+                        className="inline-flex p-3 rounded-xl border"
+                        style={{ backgroundColor: `${exp.color}20`, borderColor: `${exp.color}40` }}
                       >
-                        {highlight}
-                      </span>
-                    ))}
+                        {exp.type === 'education' ? (
+                          <GraduationCap size={32} style={{ color: exp.color }} />
+                        ) : (
+                          <Briefcase size={32} style={{ color: exp.color }} />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <h3 className="text-2xl font-bold mb-2" style={{ color: exp.color }}>
+                      {exp.title}
+                    </h3>
+                    <p className="text-xl text-white mb-4">{exp.organization}</p>
+                    
+                    <div className="flex flex-wrap gap-4 mb-4 text-gray-400 text-sm">
+                      <div className="flex items-center gap-2">
+                        <Calendar size={16} />
+                        <span>{exp.period}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin size={16} />
+                        <span>{exp.location}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-300 mb-6 text-sm leading-relaxed">{exp.description}</p>
+                  </div>
+
+                  <div>
+                    {/* Highlights */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {exp.highlights.map((highlight, i) => (
+                        <span
+                          key={i}
+                          className="px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wide"
+                          style={{ 
+                            backgroundColor: `${exp.color}15`,
+                            borderWidth: '1px',
+                            borderColor: `${exp.color}30`,
+                            color: exp.color
+                          }}
+                        >
+                          {highlight}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action website link */}
+                    {exp.website && (
+                      <div className="mt-4 pt-4 border-t border-white/5">
+                        <a 
+                          href={exp.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs transition-all cursor-pointer hover:bg-opacity-80 border"
+                          style={{ 
+                            backgroundColor: `${exp.color}20`,
+                            borderColor: `${exp.color}40`,
+                            color: exp.color
+                          }}
+                        >
+                          Visit O/L Platform
+                          <ExternalLink size={14} />
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -134,8 +169,8 @@ export function Experience() {
               </h3>
               <p className="text-gray-300 max-w-3xl mx-auto">
                 Combining technical expertise in <span className="text-[#00d4ff] font-semibold">IoT & Embedded Systems</span> with 
-                strategic business acumen as a <span className="text-[#c0ff00] font-semibold">Digital Marketing Agency Founder</span>. 
-                I bring a unique perspective that bridges hardware innovation and market strategy.
+                strategic business acumen as a <span className="text-[#c0ff00] font-semibold">Digital Marketing Agency Founder</span> and educational leader. 
+                I bring a unique perspective that bridges hardware innovation, market strategy, and software execution.
               </p>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import {
   Code2,
@@ -6,8 +7,7 @@ import {
   Zap,
   Terminal,
   Layers,
-  Smile,
-  GitBranch,
+  Sparkles
 } from 'lucide-react';
 
 type IconType = (props: any) => JSX.Element;
@@ -16,7 +16,7 @@ const skillCategories: {
   category: string;
   icon: IconType;
   color: string;
-  skills: { name: string; icon?: IconType; learning?: boolean }[];
+  skills: { name: string; learning?: boolean }[];
 }[] = [
   {
     category: 'Programming Languages',
@@ -86,46 +86,40 @@ const skillCategories: {
   },
 ];
 
-function SkillBadge({ name, color, Icon, learning }: { name: string; color: string; Icon?: IconType; learning?: boolean }) {
+function SkillButton({ name, color, learning }: { name: string; color: string; learning?: boolean }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <motion.div
-      whileHover={{ scale: 1.03 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      whileHover={{ scale: 1.04, y: -2 }}
       whileTap={{ scale: 0.98 }}
-      className="relative flex flex-col items-center justify-center gap-3 p-4 rounded-2xl bg-white/3 border border-white/6 backdrop-blur-md hover:shadow-[0_6px_30px_rgba(0,0,0,0.6)] transition-shadow duration-300"
+      className="px-4 py-3 rounded-xl bg-white/3 border transition-all duration-300 flex items-center justify-between gap-3 cursor-default"
+      style={{
+        borderColor: hovered ? color : 'rgba(255, 255, 255, 0.08)',
+        backgroundColor: hovered ? `${color}12` : 'rgba(255, 255, 255, 0.03)',
+        boxShadow: hovered ? `0 4px 20px ${color}15` : 'none'
+      }}
     >
-      <div className="relative">
-        {/* Neon glow ring */}
-        <div
-          className={`absolute -inset-1 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-          style={{ boxShadow: `0 6px 40px ${color}66` }}
+      <div className="flex items-center gap-2.5">
+        <span 
+          className="w-2 h-2 rounded-full shrink-0"
+          style={{ 
+            backgroundColor: learning ? '#ff6af5' : color,
+            boxShadow: `0 0 6px ${learning ? '#ff6af5' : color}`
+          }}
         />
-
-        <div className="relative flex items-center justify-center">
-          <div
-            className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-black/30 to-white/5 border border-white/10`}
-            style={{ boxShadow: `inset 0 -6px 18px rgba(0,0,0,0.6), 0 6px 30px ${color}30` }}
-          >
-            {Icon ? <Icon size={22} style={{ color }} /> : <Smile size={20} style={{ color }} />}
-          </div>
-
-          {learning && (
-            <span className="absolute -right-2 -top-2 flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-transparent ring-2" style={{ boxShadow: `0 0 8px ${color}` }} />
-            </span>
-          )}
-        </div>
+        <span className="text-sm font-bold text-gray-200 transition-colors">
+          {name}
+        </span>
       </div>
-
-      <div className="text-center">
-        <div className="text-sm font-semibold text-gray-100">{name}</div>
-        {learning ? (
-          <div className="mt-1 text-xs text-[#cbd5ff] flex items-center justify-center gap-2">
-            <span className="px-2 py-0.5 rounded-full text-[10px] bg-white/6 border border-white/8">Currently Learning</span>
-          </div>
-        ) : (
-          <div className="mt-1 text-xs text-gray-400">Proficient</div>
-        )}
-      </div>
+      
+      {learning && (
+        <span className="text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-[#ff6af5]/15 border border-[#ff6af5]/25 text-[#ff6af5]">
+          Learning
+        </span>
+      )}
     </motion.div>
   );
 }
@@ -139,43 +133,61 @@ export function Skills() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">
+          <h2 className="text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-[#8BE1FF] via-[#FF6AF5] to-[#C0FF00] bg-clip-text text-transparent">
               Technical Skills
             </span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">Focused on hardware, embedded systems, and modern AI tooling — presented with a dark, futuristic aesthetic.</p>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">Focused on hardware, embedded systems, development tools, and modern AI pipelines.</p>
         </motion.div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {skillCategories.map((cat, i) => {
             const HeaderIcon = cat.icon;
             return (
               <motion.div
                 key={cat.category}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.06 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
                 className="group relative"
               >
-                <div className="relative p-6 rounded-2xl bg-gradient-to-b from-white/3 to-white/2 border border-white/6 backdrop-blur-md hover:shadow-[0_15px_50px_rgba(0,0,0,0.6)] transition-shadow duration-300">
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg" style={{ background: `${cat.color}18` }}>
+                {/* Glowing border effect on hover */}
+                <div 
+                  className="absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur"
+                  style={{ background: `linear-gradient(135deg, ${cat.color}40, transparent)` }}
+                />
+                
+                <div className="relative p-6 rounded-2xl bg-[#0a0a0f]/85 border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300 h-full flex flex-col justify-between">
+                  <div>
+                    {/* Header */}
+                    <div className="flex items-center gap-3 mb-6">
+                      <div 
+                        className="p-2.5 rounded-xl border"
+                        style={{ 
+                          backgroundColor: `${cat.color}15`, 
+                          borderColor: `${cat.color}35`,
+                        }}
+                      >
                         <HeaderIcon size={20} style={{ color: cat.color }} />
                       </div>
-                      <h3 className="text-lg font-bold text-gray-100">{cat.category}</h3>
+                      <h3 className="text-lg font-bold text-white tracking-wide">{cat.category}</h3>
                     </div>
-                    <div className="text-sm text-gray-400">{cat.skills.length} items</div>
-                  </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    {cat.skills.map((s) => (
-                      <SkillBadge key={s.name} name={s.name} color={cat.color} learning={!!s.learning} />
-                    ))}
+                    {/* Skill Lists */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {cat.skills.map((s) => (
+                        <SkillButton 
+                          key={s.name} 
+                          name={s.name} 
+                          color={cat.color} 
+                          learning={s.learning} 
+                        />
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -188,17 +200,22 @@ export function Skills() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-10 p-6 rounded-2xl bg-gradient-to-r from-[#0b1020]/40 to-[#05060a]/30 border border-white/6 backdrop-blur-sm"
+          className="mt-12 p-6 rounded-2xl bg-gradient-to-r from-[#0b1020]/40 to-[#05060a]/30 border border-white/10 backdrop-blur-sm"
         >
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <h4 className="font-semibold text-gray-100">Learning & Interests</h4>
-              <p className="text-gray-400 text-sm">Actively sharpening AI & ML skills — expect continual improvements and hands-on projects.</p>
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-[#FF6AF5]/15 border border-[#FF6AF5]/30 rounded-lg">
+                <Sparkles className="text-[#FF6AF5]" size={20} />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-100">Learning & Development</h4>
+                <p className="text-gray-400 text-sm">Actively expanding my knowledge base in AI algorithms, deep learning, and advanced cloud endpoints.</p>
+              </div>
             </div>
 
-            <div className="flex gap-3">
-              <div className="px-3 py-2 rounded-full bg-gradient-to-r from-[#FF6AF5]/20 to-[#8BE1FF]/10 border border-white/6 text-sm text-gray-200">AI & ML — Currently Learning</div>
-              <div className="px-3 py-2 rounded-full bg-white/3 border border-white/6 text-sm text-gray-200">IoT & Edge</div>
+            <div className="flex flex-wrap gap-2.5">
+              <div className="px-3.5 py-1.5 rounded-full bg-[#FF6AF5]/10 border border-[#FF6AF5]/20 text-xs font-semibold text-gray-200">AI & Machine Learning</div>
+              <div className="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-gray-200">Edge Intelligence</div>
             </div>
           </div>
         </motion.div>

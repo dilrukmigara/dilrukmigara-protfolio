@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMainPage, setIsMainPage] = useState(true);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,6 +15,16 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const checkPath = () => {
+      const path = window.location.pathname;
+      setIsMainPage(path === '/' || path === '/index.html' || path === '');
+    };
+    checkPath();
+    window.addEventListener('popstate', checkPath);
+    return () => window.removeEventListener('popstate', checkPath);
+  }, []);
+
   const navItems = [
     { name: 'Home', href: '#home' },
     { name: 'Experience', href: '#experience' },
@@ -21,6 +32,32 @@ export function Navigation() {
     { name: 'Projects', href: '#projects' },
     { name: 'Leadership', href: '#leadership' },
   ];
+
+  const handleNavClick = (href: string, e: React.MouseEvent) => {
+    setIsOpen(false);
+    if (!isMainPage) {
+      e.preventDefault();
+      // Go back to main page first
+      window.history.pushState({}, '', '/');
+      window.dispatchEvent(new Event('popstate'));
+      
+      // Wait for page to render, then scroll
+      setTimeout(() => {
+        const element = document.querySelector(href);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 80);
+    } else {
+      e.preventDefault();
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -34,8 +71,19 @@ export function Navigation() {
             animate={{ opacity: 1, x: 0 }}
             className="text-xl font-bold"
           >
-            <span className="text-[#00d4ff]">Dilruk</span>
-            <span className="text-[#c0ff00]"> Migara</span>
+            <a 
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                window.history.pushState({}, '', '/');
+                window.dispatchEvent(new Event('popstate'));
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="cursor-pointer"
+            >
+              <span className="text-[#00d4ff]">Dilruk</span>
+              <span className="text-[#c0ff00]"> Migara</span>
+            </a>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -44,10 +92,11 @@ export function Navigation() {
               <motion.a
                 key={item.name}
                 href={item.href}
+                onClick={(e) => handleNavClick(item.href, e)}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="text-gray-300 hover:text-[#00d4ff] transition-colors duration-300 relative group"
+                className="text-gray-300 hover:text-[#00d4ff] transition-colors duration-300 relative group cursor-pointer"
               >
                 {item.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00d4ff] to-[#c0ff00] group-hover:w-full transition-all duration-300"></span>
@@ -79,8 +128,8 @@ export function Navigation() {
                 <a
                   key={item.name}
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="block text-gray-300 hover:text-[#00d4ff] transition-colors py-2"
+                  onClick={(e) => handleNavClick(item.href, e)}
+                  className="block text-gray-300 hover:text-[#00d4ff] transition-colors py-2 cursor-pointer"
                 >
                   {item.name}
                 </a>
