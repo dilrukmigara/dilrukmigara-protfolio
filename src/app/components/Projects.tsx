@@ -13,7 +13,7 @@ export function Projects() {
       tags: ['ESP32-S3', 'FreeRTOS', 'TinyML', '1D-CNN', 'Transfer Learning', 'Incremental Learning', 'NIDS'],
       color: '#00d4ff',
       featured: true,
-      projectPath: '/research/secureedge',
+      projectPath: 'https://research.dilrukmigara.me',
       githubLink: 'https://github.com/dilrukmigara',
     },
     {
@@ -85,6 +85,9 @@ export function Projects() {
   ];
 
   const handleProjectClick = (path: string, e: React.MouseEvent) => {
+    if (path.startsWith('http')) {
+      return; // allow natural browser navigation to external site/subdomain
+    }
     e.preventDefault();
     window.history.pushState({}, '', path);
     window.dispatchEvent(new Event('popstate'));
@@ -196,6 +199,8 @@ export function Projects() {
                       {project.projectPath ? (
                         <a 
                           href={project.projectPath}
+                          target={project.projectPath.startsWith('http') ? '_blank' : undefined}
+                          rel={project.projectPath.startsWith('http') ? 'noopener noreferrer' : undefined}
                           onClick={(e) => handleProjectClick(project.projectPath!, e)}
                           className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all hover:bg-opacity-80 cursor-pointer"
                           style={{ 

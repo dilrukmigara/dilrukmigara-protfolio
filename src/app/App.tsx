@@ -7,7 +7,6 @@ import { Leadership } from './components/Leadership';
 import { Footer } from './components/Footer';
 import { Navigation } from './components/Navigation';
 import { SmartFarm } from './components/SmartFarm';
-import { Research } from './components/Research';
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -40,7 +39,6 @@ function App() {
   }, []);
 
   const isSmartFarm = currentPath === '/smartfarm' || currentPath === '/samrtfarm';
-  const isResearch = currentPath.startsWith('/research');
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-x-hidden">
@@ -52,9 +50,7 @@ function App() {
       <Navigation />
       
       <main className="relative z-10">
-        {isResearch ? (
-          <Research initialSubpath={currentPath} />
-        ) : isSmartFarm ? (
+        {isSmartFarm ? (
           <SmartFarm />
         ) : (
           <>

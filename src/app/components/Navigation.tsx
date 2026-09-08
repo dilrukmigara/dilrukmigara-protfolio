@@ -30,17 +30,14 @@ export function Navigation() {
     { name: 'Experience', href: '#experience' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Research', href: '/research' },
+    { name: 'Research', href: 'https://research.dilrukmigara.me', isExternal: true },
     { name: 'Leadership', href: '#leadership' },
   ];
 
-  const handleNavClick = (href: string, e: React.MouseEvent) => {
+  const handleNavClick = (item: { name: string; href: string; isExternal?: boolean }, e: React.MouseEvent) => {
     setIsOpen(false);
-    if (href.startsWith('/')) {
-      e.preventDefault();
-      window.history.pushState({}, '', href);
-      window.dispatchEvent(new Event('popstate'));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (item.isExternal) {
+      // Direct external link to research subdomain
       return;
     }
 
@@ -52,7 +49,7 @@ export function Navigation() {
       
       // Wait for page to render, then scroll
       setTimeout(() => {
-        const element = document.querySelector(href);
+        const element = document.querySelector(item.href);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
         } else {
@@ -61,7 +58,7 @@ export function Navigation() {
       }, 80);
     } else {
       e.preventDefault();
-      const element = document.querySelector(href);
+      const element = document.querySelector(item.href);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
@@ -101,13 +98,18 @@ export function Navigation() {
               <motion.a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => handleNavClick(item.href, e)}
+                target={item.isExternal ? '_blank' : undefined}
+                rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                onClick={(e) => handleNavClick(item, e)}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="text-gray-300 hover:text-[#00d4ff] transition-colors duration-300 relative group cursor-pointer"
+                className="text-gray-300 hover:text-[#00d4ff] transition-colors duration-300 relative group cursor-pointer flex items-center gap-1"
               >
                 {item.name}
+                {item.isExternal && (
+                  <span className="text-[10px] text-[#00d4ff] opacity-70">↗</span>
+                )}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#00d4ff] to-[#c0ff00] group-hover:w-full transition-all duration-300"></span>
               </motion.a>
             ))}
@@ -137,10 +139,12 @@ export function Navigation() {
                 <a
                   key={item.name}
                   href={item.href}
-                  onClick={(e) => handleNavClick(item.href, e)}
+                  target={item.isExternal ? '_blank' : undefined}
+                  rel={item.isExternal ? 'noopener noreferrer' : undefined}
+                  onClick={(e) => handleNavClick(item, e)}
                   className="block text-gray-300 hover:text-[#00d4ff] transition-colors py-2 cursor-pointer"
                 >
-                  {item.name}
+                  {item.name} {item.isExternal && '↗'}
                 </a>
               ))}
             </div>
