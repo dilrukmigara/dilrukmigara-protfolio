@@ -1,9 +1,21 @@
 import { motion } from 'motion/react';
-import { ExternalLink, Github, Settings, Cpu, Box, Radio, Lightbulb, LineChart, Linkedin, Leaf } from 'lucide-react';
+import { ExternalLink, Github, Settings, Cpu, Box, Radio, Lightbulb, LineChart, Linkedin, Leaf, ShieldCheck } from 'lucide-react';
 import smartfarmImage from '../../assets/smartfarm1.jpeg';
 
 export function Projects() {
   const projects = [
+    {
+      title: '🛡️ SecureEdge: TinyML & Adaptive IDS for IoT',
+      badge: 'Final-Year Research Project',
+      description: 'An empirical research project investigating real-time Network Intrusion Detection (NIDS) on resource-constrained ESP32-S3 microcontrollers under FreeRTOS. Integrates quantized 1D-CNNs via LiteRT Micro, utilizing Transfer Learning for cross-network adaptation and Incremental Learning for zero-day attack detection without full retraining.',
+      icon: ShieldCheck,
+      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjeWJlcnNlY3VyaXR5JTIwbWljcm9jb250cm9sbGVyJTIwaW90fGVufDF8fHx8MTc3NTY0MjI0OXww&ixlib=rb-4.1.0&q=80&w=1080',
+      tags: ['ESP32-S3', 'FreeRTOS', 'TinyML', '1D-CNN', 'Transfer Learning', 'Incremental Learning', 'NIDS'],
+      color: '#00d4ff',
+      featured: true,
+      projectPath: '/research/secureedge',
+      githubLink: 'https://github.com/dilrukmigara',
+    },
     {
       title: '🚀 Smart IoT & AI-Based Environmental Monitoring System',
       description: 'An advanced, end-to-end environmental monitoring system combining IoT sensors with AI algorithms. Tracks soil metrics, temperature, humidity, and light levels in real time to perform predictive agriculture modeling and automate resource distribution.',
@@ -139,6 +151,21 @@ export function Projects() {
 
                       {/* Content */}
                       <div className="p-6">
+                        {'badge' in project && project.badge && (
+                          <div className="mb-2.5">
+                            <span
+                              className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider"
+                              style={{
+                                backgroundColor: `${project.color}18`,
+                                borderWidth: '1px',
+                                borderColor: `${project.color}45`,
+                                color: project.color,
+                              }}
+                            >
+                              {project.badge}
+                            </span>
+                          </div>
+                        )}
                         <h3 className="text-2xl font-bold mb-3" style={{ color: project.color }}>
                           {project.title}
                         </h3>
@@ -179,7 +206,21 @@ export function Projects() {
                           }}
                         >
                           <ExternalLink size={16} />
-                          View Project
+                          {'badge' in project && project.badge ? 'Explore Research' : 'View Project'}
+                        </a>
+                      ) : 'badge' in project && project.badge ? (
+                        <a
+                          href="#skills"
+                          className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all hover:bg-opacity-80 cursor-pointer"
+                          style={{
+                            backgroundColor: `${project.color}20`,
+                            borderWidth: '1px',
+                            borderColor: `${project.color}50`,
+                            color: project.color,
+                          }}
+                        >
+                          <ExternalLink size={16} />
+                          Research Focus
                         </a>
                       ) : (
                         <button 

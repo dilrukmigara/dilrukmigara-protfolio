@@ -30,11 +30,20 @@ export function Navigation() {
     { name: 'Experience', href: '#experience' },
     { name: 'Skills', href: '#skills' },
     { name: 'Projects', href: '#projects' },
+    { name: 'Research', href: '/research' },
     { name: 'Leadership', href: '#leadership' },
   ];
 
   const handleNavClick = (href: string, e: React.MouseEvent) => {
     setIsOpen(false);
+    if (href.startsWith('/')) {
+      e.preventDefault();
+      window.history.pushState({}, '', href);
+      window.dispatchEvent(new Event('popstate'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
     if (!isMainPage) {
       e.preventDefault();
       // Go back to main page first

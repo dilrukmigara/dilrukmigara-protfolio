@@ -9,8 +9,8 @@ export function Experience() {
       organization: 'SLIIT - Sri Lanka Institute of Information Technology',
       period: '2023 - Present',
       location: 'Malabe, Sri Lanka',
-      description: 'Specializing in IoT, Embedded Systems, and Digital Circuit Design',
-      highlights: ['IoT Development', 'PCB Design & Fabrication', 'Embedded C/C++', 'Digital Systems'],
+      description: 'Specializing in IoT, Embedded Systems, and Edge AI. Final-year research on "SecureEdge" — real-time intrusion detection in resource-constrained IoT microcontrollers using TinyML and Transfer Learning.',
+      highlights: ['IoT & Embedded Systems', 'TinyML & Edge AI', 'FreeRTOS & ESP-IDF', 'PCB Design & Fabrication', 'Embedded C/C++'],
       color: '#00d4ff',
     },
     {
