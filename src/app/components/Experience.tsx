@@ -22,6 +22,8 @@ export function Experience() {
       description: 'Leading a digital marketing agency specializing in data-driven strategies and brand growth',
       highlights: ['Business Strategy', 'Team Leadership', 'Client Management', 'Digital Marketing'],
       color: '#c0ff00',
+      website: 'https://goal-marketing.vercel.app',
+      websiteLabel: 'Visit Goal Marketing',
     },
     {
       type: 'work',
@@ -33,6 +35,7 @@ export function Experience() {
       highlights: ['Maths Instruction', 'Curriculum Design', 'E-Learning Platform', 'Student Mentoring'],
       color: '#ffaa00',
       website: 'https://mathsbook.dilrukmigara.me',
+      websiteLabel: 'Visit O/L Platform',
     },
   ];
 
@@ -142,7 +145,7 @@ export function Experience() {
                             color: exp.color
                           }}
                         >
-                          Visit O/L Platform
+                          {exp.websiteLabel || 'Visit Website'}
                           <ExternalLink size={14} />
                         </a>
                       </div>
