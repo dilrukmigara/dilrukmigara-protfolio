@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Code2,
   Cpu,
@@ -14,7 +14,9 @@ import {
   Gauge,
   BrainCircuit,
   Binary,
-  CheckCircle2
+  CheckCircle2,
+  ChevronDown,
+  ChevronsUpDown
 } from 'lucide-react';
 
 type IconType = (props: any) => JSX.Element;
@@ -165,9 +167,9 @@ function SkillButton({ name, color, badge }: { name: string; color: string; badg
     <motion.div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      whileHover={{ scale: 1.03, y: -2 }}
+      whileHover={{ scale: 1.02, y: -1 }}
       whileTap={{ scale: 0.98 }}
-      className="px-3.5 py-2.5 rounded-xl bg-white/[0.03] border transition-all duration-300 flex items-center justify-between gap-2.5 cursor-default"
+      className="px-3.5 py-2.5 rounded-xl bg-white/[0.03] border transition-all duration-200 flex items-center justify-between gap-2.5 cursor-default"
       style={{
         borderColor: hovered ? color : 'rgba(255, 255, 255, 0.08)',
         backgroundColor: hovered ? `${color}12` : 'rgba(255, 255, 255, 0.03)',
@@ -201,6 +203,29 @@ function SkillButton({ name, color, badge }: { name: string; color: string; badg
 }
 
 export function Skills() {
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+
+  const toggleCategory = (categoryName: string) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [categoryName]: !prev[categoryName],
+    }));
+  };
+
+  const allExpanded = skillCategories.every((cat) => !!expandedCategories[cat.category]);
+
+  const toggleAll = () => {
+    if (allExpanded) {
+      setExpandedCategories({});
+    } else {
+      const next: Record<string, boolean> = {};
+      skillCategories.forEach((cat) => {
+        next[cat.category] = true;
+      });
+      setExpandedCategories(next);
+    }
+  };
+
   return (
     <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#050508]">
       <div className="max-w-7xl mx-auto">
@@ -209,7 +234,7 @@ export function Skills() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center mb-10"
         >
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00d4ff]/10 border border-[#00d4ff]/25 text-[#00d4ff] text-xs font-semibold uppercase tracking-wider mb-4">
             <Sparkles size={14} />
@@ -225,32 +250,45 @@ export function Skills() {
             TinyML, network cybersecurity, and adaptive machine learning.
           </p>
 
-          {/* Legend */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mt-6 text-xs text-gray-400">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#7CFF00] shadow-[0_0_6px_#7CFF00]" />
-              <span className="text-gray-300">Core Engineering Skill</span>
+          {/* Legend & Controls */}
+          <div className="flex flex-wrap items-center justify-between gap-4 mt-8 pt-4 border-t border-white/5 max-w-4xl mx-auto text-xs text-gray-400">
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#7CFF00] shadow-[0_0_6px_#7CFF00]" />
+                <span className="text-gray-300">Core Engineering Skill</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#00d4ff]/15 border border-[#00d4ff]/35 text-[#00d4ff]">
+                  Research
+                </span>
+                <span className="text-gray-300">SecureEdge Final-Year Focus</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-[#00d4ff]/15 border border-[#00d4ff]/35 text-[#00d4ff]">
-                Research
-              </span>
-              <span className="text-gray-300">SecureEdge Final-Year Project Focus</span>
-            </div>
+
+            <button
+              onClick={toggleAll}
+              type="button"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/[0.04] hover:bg-white/[0.09] text-gray-300 hover:text-white border border-white/10 hover:border-white/20 transition-all cursor-pointer shadow-sm ml-auto"
+            >
+              <ChevronsUpDown size={14} className="text-[#00d4ff]" />
+              <span>{allExpanded ? 'Collapse All Sides' : 'Expand All Points'}</span>
+            </button>
           </div>
         </motion.div>
 
         {/* Skills Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4 items-start">
           {skillCategories.map((cat, i) => {
             const HeaderIcon = cat.icon;
+            const isExpanded = !!expandedCategories[cat.category];
+
             return (
               <motion.div
                 key={cat.category}
                 initial={{ opacity: 0, y: 25 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: (i % 4) * 0.08 }}
+                transition={{ duration: 0.5, delay: (i % 4) * 0.06 }}
                 className="group relative"
               >
                 {/* Glowing border effect on hover */}
@@ -259,38 +297,85 @@ export function Skills() {
                   style={{ background: `linear-gradient(135deg, ${cat.color}40, transparent)` }}
                 />
 
-                <div className="relative p-5 rounded-2xl bg-[#0a0a0f]/90 border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300 h-full flex flex-col justify-between">
+                <div className="relative p-5 rounded-2xl bg-[#0a0a0f]/90 border border-white/10 backdrop-blur-md hover:border-white/20 transition-all duration-300 flex flex-col justify-between">
                   <div>
-                    {/* Header */}
-                    <div className="flex items-start gap-3 mb-5">
-                      <div
-                        className="p-2.5 rounded-xl border shrink-0 mt-0.5"
-                        style={{
-                          backgroundColor: `${cat.color}15`,
-                          borderColor: `${cat.color}35`,
-                        }}
-                      >
-                        <HeaderIcon size={18} style={{ color: cat.color }} />
+                    {/* Header / Side covered */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => toggleCategory(cat.category)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          toggleCategory(cat.category);
+                        }
+                      }}
+                      className="cursor-pointer select-none"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="p-2.5 rounded-xl border shrink-0 mt-0.5 transition-transform duration-300 group-hover:scale-105"
+                          style={{
+                            backgroundColor: `${cat.color}15`,
+                            borderColor: `${cat.color}35`,
+                          }}
+                        >
+                          <HeaderIcon size={18} style={{ color: cat.color }} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="text-sm sm:text-base font-bold text-white tracking-tight leading-snug">
+                            {cat.category}
+                          </h3>
+                          <p className="text-[11px] text-gray-400 mt-1 leading-relaxed">{cat.subtitle}</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-sm sm:text-base font-bold text-white tracking-tight leading-snug">
-                          {cat.category}
-                        </h3>
-                        <p className="text-[11px] text-gray-400 mt-0.5 line-clamp-1">{cat.subtitle}</p>
+
+                      {/* Side overview pill & toggle indicator */}
+                      <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs">
+                        <span className="text-[11px] font-medium text-gray-400 bg-white/[0.04] px-2.5 py-1 rounded-md border border-white/5">
+                          {cat.skills.length} Key Points
+                        </span>
+
+                        <div
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold transition-colors duration-200"
+                          style={{ color: isExpanded ? cat.color : '#9ca3af' }}
+                        >
+                          <span>{isExpanded ? 'See less' : 'See more'}</span>
+                          <ChevronDown
+                            size={14}
+                            className="transition-transform duration-300"
+                            style={{
+                              transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    {/* Skill Lists */}
-                    <div className="flex flex-col gap-2">
-                      {cat.skills.map((s) => (
-                        <SkillButton
-                          key={s.name}
-                          name={s.name}
-                          color={cat.color}
-                          badge={s.badge}
-                        />
-                      ))}
-                    </div>
+                    {/* Collapsible Dropdown Skill List */}
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          key="skills-list"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.28, ease: 'easeInOut' }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pt-3 flex flex-col gap-2">
+                            {cat.skills.map((s) => (
+                              <SkillButton
+                                key={s.name}
+                                name={s.name}
+                                color={cat.color}
+                                badge={s.badge}
+                              />
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </motion.div>
