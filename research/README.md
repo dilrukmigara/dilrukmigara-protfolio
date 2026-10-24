@@ -37,3 +37,18 @@ Build outputs are generated in `research/dist`.
 2. Set **Base directory** to `research`.
 3. Build command: `npm run build`, Publish directory: `dist`.
 4. Under **Domain management**, add custom domain `research.dilrukmigara.me`.
+
+## PP1 showcase
+
+Only the `research/` application is changed. The parent portfolio and its deployment settings are independent.
+
+- `src/content.ts`: editable identity, model configuration, statuses, feature groups, milestones, feedback and references.
+- `src/proposal.json`: preserved proposal architecture, research questions and roadmap.
+- `src/App.tsx`: accessible sections, disclosures and illustrative network story.
+- `src/index.css`: responsive dark theme and reduced-motion alternative.
+
+The update brief is the source for reported implementation status. Historical numerical results are deliberately withheld pending original exports and dated device logs. No live telemetry, generated evidence, API keys or private dashboard connections are included. Add genuine PP1 documents and photographs before enabling document downloads or a prototype gallery.
+
+The custom dashboard URL could not be verified during implementation and is not labelled live. The existing dashboard address is clearly marked as externally hosted and availability-unverified.
+
+Legacy paths (`/architecture`, `/evaluation`, `/tinyml`, `/methodology`, `/transfer-learning`, `/incremental-learning`, `/problem`, `/gap`, `/objectives`, `/novelty`) map to relevant sections after the SPA loads. Production hosting must retain its SPA fallback for direct path requests.

@@ -1,0 +1,66 @@
+{
+  "questions": [
+    {
+      "question": "RQ1: How accurately can a lightweight 1D-CNN classify network traffic using a reduced feature set?",
+      "objective": "Sub-Objective 01: Develop a lightweight 1D-CNN flow classifier capable of capturing spatial relationships in network flows with minimal computational complexity.",
+      "details": "Investigates feature importance metrics (mutual information, correlation analysis) to reduce the dimensionality from >80 raw flow features down to <20, and measures precision, recall, F1-score, and confusion matrix against baseline models (Random Forest, Decision Trees, SVM)."
+    },
+    {
+      "question": "RQ2: What are the effects of INT8 quantization on accuracy, memory, latency and energy?",
+      "objective": "Sub-Objective 02: Optimize and deploy the model on ESP32-S3 using TinyML (TensorFlow Lite Micro).",
+      "details": "Evaluates post-training INT8 quantization and structured pruning. Compares floating-point 32-bit vs. 8-bit integer models in terms of accuracy drop, RAM overhead, Flash footprint (<100KB target), and execution latency per flow on the 240MHz ESP32-S3."
+    },
+    {
+      "question": "RQ3: How much does transfer learning improve adaptation compared with training from scratch?",
+      "objective": "Sub-Objective 03: Investigate transfer learning for adaptation to a target IoT environment.",
+      "details": "Trains a generalized baseline model on large public benchmarks (e.g. CIC-IDS2017 / UNSW-NB15) and fine-tunes selected frozen/unfrozen layers on local IoT network data. Evaluates convergence speed, sample efficiency, and classification accuracy compared to building models from scratch."
+    },
+    {
+      "question": "RQ4: How well can incremental learning detect new attacks while minimizing catastrophic forgetting?",
+      "objective": "Sub-Objective 04: Investigate incremental learning for learning new attacks while minimizing catastrophic forgetting.",
+      "details": "Studies continual learning mechanisms\u2014specifically Elastic Weight Consolidation (EWC) and rehearsal-based memory replay\u2014to allow the deployed edge model to incorporate novel attack classes over time without degrading performance on previously learned patterns."
+    }
+  ],
+  "architecture": [
+    [
+      "1. IoT Network Environment",
+      "Heterogeneous IoT devices, smart sensors, cameras, and local access gateways emitting continuous raw network traffic."
+    ],
+    [
+      "2. Network Traffic Capture",
+      "Software-based packet sniffer utilizing Wireshark / tshark to capture raw PCAP frames, parse headers, and generate bidirectional flows."
+    ],
+    [
+      "3. Feature Extraction & Selection",
+      "Statistical flow metric extraction and dimensional reduction, distilling hundreds of raw metrics down to top < 20 discriminative features."
+    ],
+    [
+      "4. ESP32-S3 Edge Inference Engine",
+      "The central physical hardware device running the lightweight quantized 1D-CNN using TensorFlow Lite Micro runtime directly on MCU silicon."
+    ],
+    [
+      "5. Classification Output",
+      "Instantaneous multi-class or binary decision boundary: Normal Traffic (allowed) vs. Malicious Intrusion (flagged & logged)."
+    ],
+    [
+      "6. Alert & Communication",
+      "Lightweight, encrypted MQTT telemetry transmission publishing alert notifications and flow statistics to central cloud or local broker."
+    ],
+    [
+      "7. Security Dashboard",
+      "Interactive security operations dashboard providing real-time threat telemetry, attack distribution charts, and edge node health."
+    ]
+  ],
+  "roadmap": [
+    "Literature review",
+    "Problem & scope definition",
+    "Methodology & architecture design",
+    "Model development & TinyML optimization",
+    "ESP32-S3 hardware setup",
+    "Transfer learning study",
+    "Incremental learning study",
+    "Testbed latency benchmarking",
+    "End-to-end evaluation",
+    "Final documentation & thesis"
+  ]
+}
